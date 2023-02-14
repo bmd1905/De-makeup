@@ -1,0 +1,4 @@
+tensorflow-text==2.8.4
+tf-models-official==2.7.0
+tensorflow_addons
+cv2
