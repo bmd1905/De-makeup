@@ -1,4 +1,6 @@
 # De-makeup
+
+### Ongoing Project
 This project aims to create a neural network model that can automatically remove makeup from facial images. It is built using ResNet34 with UNet architecture and trained on a custom dataset of facial images with and without makeup.
 
 <p align="center">
