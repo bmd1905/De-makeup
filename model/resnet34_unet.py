@@ -1,10 +1,7 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
 import tensorflow as tf
 from tensorflow.keras.models import Model
 import tensorflow_addons as tfa
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
+
 
 class ReNet34_UNet():
     def __init__(self, input_shape):
@@ -129,38 +126,3 @@ class ReNet34_UNet():
         x = tf.keras.layers.Activation('gelu')(x)
 
         return x
-
-
-if __name__ == '__main__':
-    # For cmd testing
-    # Create model
-    ob = ReNet34_UNet((224, 224, 3))
-    model = ob.build_model()
-    
-    model.load_weights('../pretrained/de_makeup_30_epoch.h5')
-
-    # # Generate random noise image
-    # noise_img = np.random.rand(224, 224, 3)
-
-    # # Scale values between 0 and 255
-    # noise_img *= 255
-    # noise_img = noise_img.astype(np.uint8)
-    # # Reshape to fit with the model
-    # noise_img = noise_img.reshape(-1, 224, 224, 3)
-    
-
-    # load the image from file
-    img = load_img('/Users/bmd1905/MyDocuments/Project/De-makeup/sample/makeup1.jpg', target_size=(224, 224, 3))
-
-    # convert the image to a tensor
-    img_tensor = tf.keras.preprocessing.image.img_to_array(img)
-    img_tensor = tf.reshape(img_tensor, (1, 224, 224, 3))
-
-    output = model(img_tensor)
-    output = tf.reshape(output, (224, 224, 3))
-   # convert the tensor to an image
-    output_image = tf.keras.preprocessing.image.array_to_img(output)
-
-    # display the image using Matplotlib
-    plt.imshow(output_image)
-    plt.show()
