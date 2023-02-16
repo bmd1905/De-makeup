@@ -1,2 +1,4 @@
 __pycache__
 temp.py
+.DS_Store
+.ipynb_checkpoints
