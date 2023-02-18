@@ -1,5 +1,5 @@
 training:
-  epochs: 32
+  epochs: 64
   batch_size: 1
   init_lr: 1e-2
   img_path: ./demake_up_data

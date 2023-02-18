@@ -75,8 +75,8 @@ class Trainer():
                 total_loss = total_loss + loss
                 step_counter += 1
                 # test
-                # if step_counter == 10:
-                #     break
+                if step_counter == 100:
+                    break
                 
             total_loss = total_loss/step_counter
             print('epoch: {}   loss: {}'.format(epoch, total_loss))
@@ -85,8 +85,8 @@ class Trainer():
             if best_pnsr < pnsr:
                 best_pnsr = pnsr
                 
-                for makeup_img, non_img in val_ds.take(1):
-                    self.generate_images(makeup_img, non_img)
+                # for makeup_img, non_img in val_ds.take(1):
+                #     self.generate_images(makeup_img, non_img)
 
     def evaluate(self, epoch, dataset):  
         psnr_non_mean = 0.0
@@ -98,8 +98,8 @@ class Trainer():
             psnr_non_mean += __psnr_non_mean
             count += 1
             # test
-            # if count == 10:
-            #     break
+            if count == 100:
+                break
         psnr_non_mean = psnr_non_mean/count
         print('-------- psnr_non: ', psnr_non_mean.numpy(), '----- epoch: ', epoch, '  count: ', count)
         
@@ -116,6 +116,6 @@ class Trainer():
             plt.title(title[i])
             plt.imshow(display_list[i])
             plt.axis('off')
-        plt.show()
+        #plt.show()
 
 
