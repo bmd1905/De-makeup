@@ -17,8 +17,8 @@ class ReNet34_UNet(Model):
 
         self.model = tf.keras.models.Model(inputs=inputs, outputs = decoder, name = "ResNet34_Unet")
 
-    def call(self, makeup_imgs):
-        return self.model(makeup_imgs)
+    def __call__(self, makeup_imgs, training=True):
+        return self.model(makeup_imgs, training)
         # encoded = self.encoder(makeup_imgs)
         # decoded = self.decoder(encoded)
         # return decoded

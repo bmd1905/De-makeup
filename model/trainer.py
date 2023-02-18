@@ -55,7 +55,7 @@ class Trainer():
     def train_step(self, makeup_img, non_img):
         with tf.GradientTape() as tape:
             # output
-            pred_non = self.model([makeup_img]) #, training=True
+            pred_non = self.model([makeup_img], training=True)
             loss = tf.reduce_mean(tf.square(pred_non-non_img))*100
             
         generator_gradients = tape.gradient(loss, self.model.trainable_variables)
@@ -68,20 +68,25 @@ class Trainer():
         step_counter = 0
         for epoch in range(self.epochs):
             # Train
+            step_counter = 0
             total_loss = 0.0
             for makeup_img, non_img in train_ds:
                 loss = self.train_step(makeup_img, non_img)
                 total_loss = total_loss + loss
                 step_counter += 1
+                # test
+                # if step_counter == 10:
+                #     break
+                
             total_loss = total_loss/step_counter
             print('epoch: {}   loss: {}'.format(epoch, total_loss))
             
-            pnsr = self.evaluate(self.model, epoch, val_ds)     
+            pnsr = self.evaluate(epoch, val_ds)     
             if best_pnsr < pnsr:
                 best_pnsr = pnsr
                 
                 for makeup_img, non_img in val_ds.take(1):
-                    self.generate_images(self.model, makeup_img, non_img)
+                    self.generate_images(makeup_img, non_img)
 
     def evaluate(self, epoch, dataset):  
         psnr_non_mean = 0.0
@@ -91,7 +96,10 @@ class Trainer():
             psnr_non = tf.image.psnr(pred_non, non_img, max_val=1.0)
             __psnr_non_mean = tf.math.reduce_mean(psnr_non)
             psnr_non_mean += __psnr_non_mean
-            count =count + 1
+            count += 1
+            # test
+            # if count == 10:
+            #     break
         psnr_non_mean = psnr_non_mean/count
         print('-------- psnr_non: ', psnr_non_mean.numpy(), '----- epoch: ', epoch, '  count: ', count)
         
@@ -108,6 +116,6 @@ class Trainer():
             plt.title(title[i])
             plt.imshow(display_list[i])
             plt.axis('off')
-        #plt.show()
+        plt.show()
 
 
