@@ -10,16 +10,12 @@ from model.resnet34_unet import ReNet34_UNet
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--img", help="File path of image.")
-    parser.add_argument("--weights", help="Weights of the model.", default='./pretrained/de_makeup_30_epoch.h5')
+    parser.add_argument("--weights", help="Weights of the model.", default='./pretrained/de_makeup_50_25psnr_epoch.h5')
 
     args = parser.parse_args()
-    # For cmd testing
-    # Create model
-    ob = ReNet34_UNet((224, 224, 3))
-    model = ob.build_model()
     
-    #model.load_weights('./pretrained/de_makeup_30_epoch.h5')
-    model.load_weights(args.weights)
+    # load model
+    model = tf.keras.models.load_model(args.weights)
     
     # load the image from file
     # img = load_img('./sample/makeup1.jpg', target_size=(224, 224, 3))
