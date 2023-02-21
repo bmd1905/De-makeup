@@ -1,5 +1,16 @@
+data:
+  input_shape: [224, 224, 3]
+
 training:
-  epochs: 64
+  epochs: 10
   batch_size: 1
-  init_lr: 1e-2
+  init_lr: 1e-7
   img_path: ./demake_up_data
+
+model:
+  block_layers: [3, 4, 6, 3]
+  filter_size: 64
+
+pretrained: 
+  is_pretrained: True
+  pretrained_path: 'pretrained/de_makeup_epochs_26_3psnr_epoch.h5'

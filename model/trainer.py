@@ -1,13 +1,9 @@
 
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 import tensorflow as tf
-tf.config.run_functions_eagerly(True)
-import sys
+#tf.config.run_functions_eagerly(True)
+#tf.data.experimental.enable_debug_mode()
 
 from loader.aug import ImgAugTransform
-
 from model.resnet34_unet import ReNet34_UNet
 #from official.nlp import optimization  # to create AdamW optimizer
 #from tensorflow_addons.optimizers import AdamW
@@ -15,19 +11,21 @@ from model.resnet34_unet import ReNet34_UNet
 
 class Trainer():
     def __init__(self, config, pretrained=True, augmentor=ImgAugTransform()):
-
         self.config = config
-        self.model = ReNet34_UNet(input_shape=(224, 224, 3))
-        
+        self.model = ReNet34_UNet(config)
 
         self.epochs =  config['training']['epochs']
-        self.init_lr = config['training']['init_lr']
         self.batch_size = config['training']['batch_size']
+        self.init_lr = float(config['training']['init_lr'])
 
-        # if pretrained:
-        #     weight_file = download_weights(config['pretrain'], quiet=config['quiet'])
-        #     self.load_weights(weight_file)
+        pretrained = config['pretrained']['is_pretrained']
 
+        if pretrained:
+            pretrained_path = config['pretrained']['pretrained_path']
+            self.model = tf.keras.models.load_model(pretrained_path)
+            print(f"Loaded pretrained from: {pretrained_path}")
+            # weight_file = download_weights(config['pretrain'], quiet=config['quiet'])
+            # self.load_weights(weight_file)
 
         # Optimizer
         # steps_per_epoch = tf.data.experimental.cardinality(self.train_dataset).numpy()
@@ -43,12 +41,12 @@ class Trainer():
         # schedule = tf.optimizers.schedules.PiecewiseConstantDecay(
         #     [10000, 15000], [1e-0, 1e-1, 1e-2])
         # # lr and wd can be a function or a tensor
-        # lr = 1e-3 * schedule(step)
+        # lr = 1e-1 * schedule(step)
         # wd = lambda: 1e-4 * schedule(step)
-        
-        # # PiecewiseConstantDecay also doesn't seem to work properly
-        # self.optimizer = AdamW(learning_rate=lr, weight_decay=wd)
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
+        # self.optimizer = tfa.optimizers.AdamW(learning_rate=lr, weight_decay=wd)
+
+
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.init_lr)
         
     
     @tf.function
@@ -75,7 +73,7 @@ class Trainer():
                 total_loss = total_loss + loss
                 step_counter += 1
                 # test
-                if step_counter == 100:
+                if step_counter == 1:
                     break
                 
             total_loss = total_loss/step_counter
@@ -84,9 +82,7 @@ class Trainer():
             pnsr = self.evaluate(epoch, val_ds)     
             if best_pnsr < pnsr:
                 best_pnsr = pnsr
-                
-                # for makeup_img, non_img in val_ds.take(1):
-                #     self.generate_images(makeup_img, non_img)
+
 
     def evaluate(self, epoch, dataset):  
         psnr_non_mean = 0.0
@@ -98,24 +94,11 @@ class Trainer():
             psnr_non_mean += __psnr_non_mean
             count += 1
             # test
-            if count == 100:
+            if count == 1:
                 break
         psnr_non_mean = psnr_non_mean/count
         print('-------- psnr_non: ', psnr_non_mean.numpy(), '----- epoch: ', epoch, '  count: ', count)
         
         return psnr_non_mean
-
-    def generate_images(self, makeup_img, non_img):
-        pred_non = self.model([makeup_img], training=False)
-        plt.figure(figsize=(15,20))
-        display_list = [makeup_img[0], non_img[0], pred_non[0]]
-        title = ['Input', 'Non-makeup', 'Predicted']    
-
-        for i in range(3):
-            plt.subplot(1, 3, i+1)
-            plt.title(title[i])
-            plt.imshow(display_list[i])
-            plt.axis('off')
-        #plt.show()
 
 
