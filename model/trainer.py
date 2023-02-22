@@ -24,8 +24,6 @@ class Trainer():
             pretrained_path = config['pretrained']['pretrained_path']
             self.model = tf.keras.models.load_model(pretrained_path)
             print(f"Loaded pretrained from: {pretrained_path}")
-            # weight_file = download_weights(config['pretrain'], quiet=config['quiet'])
-            # self.load_weights(weight_file)
 
         # Optimizer
         # steps_per_epoch = tf.data.experimental.cardinality(self.train_dataset).numpy()
@@ -102,7 +100,7 @@ class Trainer():
             if count == 1:
                 break
         psnr_non_mean = psnr_non_mean/count
-        print('-------- psnr_non: ', psnr_non_mean.numpy(), '----- epoch: ', epoch, '  count: ', count)
+        print('-------- psnr_non: ', psnr_non_mean.numpy(), '----- epoch: ', epoch)
         
         return psnr_non_mean
 

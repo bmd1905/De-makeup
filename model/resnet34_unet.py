@@ -101,7 +101,7 @@ class ReNet34_UNet(Model):
         return x
 
     def convolutional_block(self, x, filter):
-        # copy tensor to variable called x_skip
+        # Copy tensor to variable called x_skip
         x_skip = x
         # Layer 1
         x = tf.keras.layers.Conv2D(filter, (3,3), padding = 'same', strides = (2,2))(x)
