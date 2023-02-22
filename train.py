@@ -18,4 +18,3 @@ if __name__ == '__main__':
 
     # Train
     trainer.train(train_ds, val_ds)
-

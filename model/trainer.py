@@ -83,6 +83,11 @@ class Trainer():
             if best_pnsr < pnsr:
                 best_pnsr = pnsr
 
+        # Save model
+        if self.config['training']['isexport']:
+            export_path = self.config['training']['export']
+            self.model.save(export_path)
+            
 
     def evaluate(self, epoch, dataset):  
         psnr_non_mean = 0.0

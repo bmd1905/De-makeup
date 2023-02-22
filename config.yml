@@ -6,6 +6,8 @@ training:
   batch_size: 1
   init_lr: 1e-7
   img_path: ./demake_up_data
+  isexport: True
+  export: './runs/weights.h5'
 
 model:
   block_layers: [3, 4, 6, 3]
