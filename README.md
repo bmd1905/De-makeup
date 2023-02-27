@@ -2,7 +2,10 @@
 This project aims to create a neural network model that can automatically remove makeup from facial images. It is built using UNet with ResNet34 as backbone and trained on a custom dataset of facial images with and without makeup.
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/90423581/220602743-d6554b74-7f73-4afd-aa98-9a1094671107.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="750" height="360" />
+  <img src="https://user-images.githubusercontent.com/90423581/221457342-94f20315-b2bd-450b-b2ce-b27aa88ab62e.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="700" height="300" />
+</p>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/90423581/221457534-53cb45ff-4625-4e42-8b1b-b62b8a0ab11f.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="700" height="300" />
 </p>
 
 
