@@ -1,4 +1,7 @@
 # De-makeup
+
+>Onging Project
+
 This project aims to create a neural network model that can automatically remove makeup from facial images. It is built using UNet with ResNet34 as backbone and trained on a custom dataset of facial images with and without makeup.
 
 <p align="center">
